@@ -44,4 +44,16 @@ body {
     padding: 10px;
     border-bottom: 1px solid #ccc;
     font-size: 16px;
+    display: flex;
+    align-items: center; /* Align items vertically */
+    justify-content: space-between; /* Spacing between task text and delete button */
+}
+
+
+.task-text {
+    margin-right: 10px; /* Adjust margin between task text and delete button */
+}
+
+.delete-btn {
+    cursor: pointer;
 }

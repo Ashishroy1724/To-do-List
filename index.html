@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/c075c0adf0.js" crossorigin="anonymous"></script>
+    <style>
+       
+    </style>
 </head>
 <body>
     <div class="container">
@@ -27,11 +31,16 @@
             function addTask(taskText) {
                 const taskItem = document.createElement('div');
                 taskItem.classList.add('task-item');
-                taskItem.textContent = taskText;
 
-                // Create delete button
+                const taskTextElement = document.createElement('span');
+                taskTextElement.textContent = taskText;
+                taskTextElement.classList.add('task-text');
+
+                taskItem.appendChild(taskTextElement);
+
+                // Create delete button with Font Awesome icon
                 const deleteButton = document.createElement('button');
-                deleteButton.textContent = '❌';
+                deleteButton.innerHTML = '<i class="fas fa-times"></i>'; 
                 deleteButton.classList.add('delete-btn');
 
                 // Add event listener to delete button
@@ -48,11 +57,11 @@
 
             // Event listener for form submission
             addButton.addEventListener('click', function(event) {
-                event.preventDefault(); // Prevent form submission
-                const todoText = todoInput.value.trim(); // Get the value of the input field
+                event.preventDefault(); 
+                const todoText = todoInput.value.trim(); 
                 if (todoText !== '') {
-                    addTask(todoText); // Add task to the list
-                    todoInput.value = ''; // Clear the input field
+                    addTask(todoText); 
+                    todoInput.value = ''; 
                 }
             });
         });
