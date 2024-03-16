@@ -60,6 +60,7 @@ body {
 
 .delete-btn {
     cursor: pointer;
+    font-size: large;
     transition: transform 0.2s ease; /* Smooth transition */
 }
 
