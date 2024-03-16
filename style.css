@@ -2,7 +2,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: linear-gradient(to right, #ff6347, #ff69b4); /* Changed gradient colors */
+    background-image: linear-gradient(to right, #2265d2, #e169ff); /* Changed gradient colors */
 }
 
 .container {
@@ -16,7 +16,9 @@ body {
 
 .list-container {
     margin-top: 20px;
+    text-wrap: wrap;
 }
+
 
 .task-input {
     width: calc(100% - 70px);
@@ -50,12 +52,13 @@ body {
     border-bottom: 1px solid #ccc;
     font-size: 16px;
     display: flex;
-    align-items: center; /* Align items vertically */
-    justify-content: space-between; /* Spacing between task text and delete button */
+    align-items: center;
+    justify-content: space-between;
 }
 
 .task-text {
-    margin-right: 10px; /* Adjust margin between task text and delete button */
+    margin-right: 10px; 
+    word-break: break-all; 
 }
 
 .delete-btn {
@@ -91,4 +94,35 @@ body {
     border-radius: 5px 0 0 5px;
     font-size: 16px;
     outline: none;
+}
+
+@media screen and (max-width: 600px) {
+    .container {
+        width: 80%; /* Adjust container width to fit the screen */
+        padding: 10px; /* Add padding for better readability */
+        border-bottom: 1px solid #ccc;
+    }
+    .task-input {
+        width: 92%; /* Adjust input width to fit smaller screens */
+    }
+    .category-select,
+    .other-category-input {
+        width: 100%; /* Make category select and input fields full width */
+        margin-top: 10px; /* Add some spacing between elements */
+    }
+    .custom-category{
+        width: 92%;
+        margin-top: 10px;
+        border-bottom: 1px solid #ccc;
+    }
+}
+
+/* For screens smaller than 400px */
+@media screen and (max-width: 400px) {
+    .add-btn {
+        width: 100%; /* Make add button full width */
+    }
+    .add-btn:hover {
+        transform: none; /* Disable hover effect for small screens */
+    }
 }
