@@ -67,3 +67,28 @@ body {
 .delete-btn:hover{
     transform: scale(1.1); /* Increase button size */
 }
+
+.category-select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    outline: none;
+    margin-right: 10px; /* Adjust spacing */
+}
+
+/* Add styles for task categories */
+.category {
+    margin-left: 5px; /* Adjust spacing */
+    font-style: italic;
+    color: #888; /* Adjust color */
+}
+
+.custom-category{
+    width: 20%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+    outline: none;
+}

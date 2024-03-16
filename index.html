@@ -15,6 +15,15 @@
         <h1>To-Do List</h1>
         <div class="form-container">
             <input class="task-input" type="text" id="todo-input" placeholder="Add new task">
+            <!-- Add task category dropdown -->
+            <select class="category-select" id="category-select">
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="shopping">Shopping</option>
+                <option value="other">Other</option> <!-- Other option -->
+            </select>
+            <!-- Input field for custom category -->
+            <input class="custom-category" type="text" id="custom-category" placeholder="Enter custom category" style="display: none;">
             <button class="add-btn" type="submit" id="add-btn">Add</button>
         </div>
         <div class="list-container" id="todo-list">
@@ -26,9 +35,20 @@
             const todoInput = document.getElementById('todo-input');
             const todoList = document.getElementById('todo-list');
             const addButton = document.getElementById('add-btn');
+            const categorySelect = document.getElementById('category-select');
+            const customCategoryInput = document.getElementById('custom-category');
+
+            // Event listener for category select change
+            categorySelect.addEventListener('change', function() {
+                if (categorySelect.value === 'other') {
+                    customCategoryInput.style.display = 'inline-block'; // Show custom category input
+                } else {
+                    customCategoryInput.style.display = 'none'; // Hide custom category input
+                }
+            });
 
             // Function to add task to the list
-            function addTask(taskText) {
+            function addTask(taskText, category) {
                 const taskItem = document.createElement('div');
                 taskItem.classList.add('task-item');
 
@@ -36,11 +56,16 @@
                 taskTextElement.textContent = taskText;
                 taskTextElement.classList.add('task-text');
 
+                const categoryElement = document.createElement('span');
+                categoryElement.textContent = `(${category})`;
+                categoryElement.classList.add('category');
+
                 taskItem.appendChild(taskTextElement);
+                taskItem.appendChild(categoryElement);
 
                 // Create delete button with Font Awesome icon
                 const deleteButton = document.createElement('button');
-                deleteButton.innerHTML = '<i class="fa-solid fa-xmark"></i>'; 
+                deleteButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
                 deleteButton.classList.add('delete-btn');
 
                 // Add event listener to delete button
@@ -59,9 +84,14 @@
             addButton.addEventListener('click', function(event) {
                 event.preventDefault(); 
                 const todoText = todoInput.value.trim(); 
+                let category = categorySelect.value; // Get selected category
+                if (category === 'other') {
+                    category = customCategoryInput.value.trim(); // Use custom category if selected
+                }
                 if (todoText !== '') {
-                    addTask(todoText); 
+                    addTask(todoText, category); 
                     todoInput.value = ''; 
+                    customCategoryInput.value = ''; // Clear custom category input
                 }
             });
         });
