@@ -11,9 +11,7 @@
     <div class="container">
         <h1>To-Do List</h1>
         <div class="form-container">
-           
-                <input class="task-input" type="text" id="todo-input" placeholder="Add new task">
-          
+            <input class="task-input" type="text" id="todo-input" placeholder="Add new task">
             <!-- Add task category dropdown -->
             <select class="category-select" id="category-select">
                 <option value="work">Work</option>
@@ -37,6 +35,53 @@
             const categorySelect = document.getElementById('category-select');
             const customCategoryInput = document.getElementById('custom-category');
 
+            // Load tasks from cookies
+            const savedTasks = JSON.parse(getCookie('tasks')) || [];
+
+            // Function to render tasks
+            function renderTasks() {
+                todoList.innerHTML = ''; // Clear existing tasks
+                savedTasks.forEach(task => {
+                    const taskItem = document.createElement('div');
+                    taskItem.classList.add('task-item');
+
+                    const taskTextElement = document.createElement('span');
+                    taskTextElement.textContent = task.text;
+                    taskTextElement.classList.add('task-text');
+
+                    const categoryElement = document.createElement('span');
+                    categoryElement.textContent = `(${task.category})`;
+                    categoryElement.classList.add('category');
+
+                    taskItem.appendChild(taskTextElement);
+                    taskItem.appendChild(categoryElement);
+
+                    // Create delete button with Font Awesome icon
+                    const deleteButton = document.createElement('button');
+                    deleteButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+                    deleteButton.classList.add('delete-btn');
+
+                    // Add event listener to delete button
+                    deleteButton.addEventListener('click', function() {
+                        const index = savedTasks.indexOf(task);
+                        if (index !== -1) {
+                            savedTasks.splice(index, 1); // Remove task from savedTasks array
+                            setCookie('tasks', JSON.stringify(savedTasks), 365); // Update cookie
+                            renderTasks(); // Render updated tasks
+                        }
+                    });
+
+                    // Append delete button to task item
+                    taskItem.appendChild(deleteButton);
+
+                    // Append task item to the list
+                    todoList.appendChild(taskItem);
+                });
+            }
+
+            // Initial render of tasks
+            renderTasks();
+
             // Event listener for category select change
             categorySelect.addEventListener('change', function() {
                 if (categorySelect.value === 'other') {
@@ -45,39 +90,6 @@
                     customCategoryInput.style.display = 'none'; // Hide custom category input
                 }
             });
-
-            // Function to add task to the list
-            function addTask(taskText, category) {
-                const taskItem = document.createElement('div');
-                taskItem.classList.add('task-item');
-
-                const taskTextElement = document.createElement('span');
-                taskTextElement.textContent = taskText;
-                taskTextElement.classList.add('task-text');
-
-                const categoryElement = document.createElement('span');
-                categoryElement.textContent = `(${category})`;
-                categoryElement.classList.add('category');
-
-                taskItem.appendChild(taskTextElement);
-                taskItem.appendChild(categoryElement);
-
-                // Create delete button with Font Awesome icon
-                const deleteButton = document.createElement('button');
-                deleteButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
-                deleteButton.classList.add('delete-btn');
-
-                // Add event listener to delete button
-                deleteButton.addEventListener('click', function() {
-                    taskItem.remove();
-                });
-
-                // Append delete button to task item
-                taskItem.appendChild(deleteButton);
-
-                // Append task item to the list
-                todoList.appendChild(taskItem);
-            }
 
             // Event listener for form submission
             addButton.addEventListener('click', function(event) {
@@ -88,11 +100,34 @@
                     category = customCategoryInput.value.trim(); // Use custom category if selected
                 }
                 if (todoText !== '') {
-                    addTask(todoText, category); 
+                    savedTasks.push({ text: todoText, category }); // Add task to savedTasks array
+                    setCookie('tasks', JSON.stringify(savedTasks), 365); // Update cookie
+                    renderTasks(); // Render updated tasks
                     todoInput.value = ''; 
                     customCategoryInput.value = ''; // Clear custom category input
                 }
             });
+
+            // Function to set a cookie
+            function setCookie(name, value, days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                const expires = "expires=" + date.toUTCString();
+                document.cookie = name + "=" + value + ";" + expires + ";path=/";
+            }
+
+            // Function to get a cookie
+            function getCookie(name) {
+                const decodedCookie = decodeURIComponent(document.cookie);
+                const cookies = decodedCookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.startsWith(name + '=')) {
+                        return cookie.substring(name.length + 1);
+                    }
+                }
+                return null;
+            }
         });
     </script>
 </body>
